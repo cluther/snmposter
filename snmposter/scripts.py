@@ -17,6 +17,7 @@
 #
 ##############################################################################
 
+import sys
 from optparse import OptionParser
 from snmposter import SNMPosterFactory
 
@@ -29,5 +30,11 @@ def launcher():
     options, args = parser.parse_args()
 
     factory = SNMPosterFactory()
-    factory.configure(options.filename)
+
+    try:
+        factory.configure(options.filename)
+    except IOError:
+        print >> sys.stderr, "Error opening %s." % options.filename
+        sys.exit(1)
+
     factory.start()

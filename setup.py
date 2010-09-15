@@ -19,7 +19,7 @@
 
 from setuptools import setup, find_packages
 
-version = '0.9'
+version = '0.9.1'
 
 setup(
     name='snmposter',
@@ -62,6 +62,7 @@ setup(
     install_requires=[
         'Twisted',
         #'TwistedSNMP', Not currently installable via PyPI.
+        #'pysnmp-se', Not currently installable via PyPI.
         ],
 
     entry_points={

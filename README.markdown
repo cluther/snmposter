@@ -6,7 +6,12 @@ to be the agent that it was gathered from. This can be useful when you're
 developing SNMP management tools.
 
 ### Requirements
-Twisted and TwistedSNMP
+Twisted, TwistedSNMP and PySNMP-SE.
+
+Twisted is available from PyPI and will be automatically installed if you go
+the route of easy_install or pip. TwistedSNMP and PySNMP-SE are not currently
+available from PyPI and should be individually downloaded from sourceforge
+and installed from source.
 
 ### Installation
 Install like any other Python module.
