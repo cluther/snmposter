@@ -61,7 +61,7 @@ setup(
 
     install_requires=[
         'Twisted',
-        'TwistedSNMP',
+        #'TwistedSNMP', Not currently installable via PyPI.
         ],
 
     entry_points={
