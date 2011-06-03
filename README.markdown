@@ -49,9 +49,11 @@ containing the output of an snmpwalk command. The second column should contain
 an IP address that this snmpwalk data will be exposed on.
 
 Example usage:
+
     sudo snmposter /etc/snmposter/agents.csv
 
 Example contents of `/etc/snmposter/agents.csv`:
+
     /etc/snmposter/agents/Cisco_2811.snmpwalk,127.0.1.11
     /etc/snmposter/agents/NetApp_Filer_FAS3020.snmpwalk,127.0.1.12
 
@@ -63,6 +65,7 @@ would recommend adding some entries to your `/etc/hosts` file to make it even
 easier.
 
 Example additions to `/etc/hosts`:
+
     127.0.1.11      cisco-2811
     127.0.1.12      netapp-filer-fa3020
 
@@ -73,6 +76,7 @@ snmposter to get the most raw data possible and provides the most accurate
 simulation.
 
 Example snmpwalk command to generate the above `Cisco_2811.snmpwalk` file:
+
     snmpwalk -v2c -c public -m none -O enU 10.120.5.1 > Cisco_2811.snmpwalk
     snmpwalk -v2c -c public -m none -O enU 10.120.5.1 .1.3.6.1.4.1.9 >> Cisco_2811.snmpwalk
 
