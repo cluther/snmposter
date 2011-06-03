@@ -14,13 +14,28 @@ available from PyPI and should be individually downloaded from sourceforge
 and installed from source.
 
 ### Installation
-Install like any other Python module.
+First you must download and install the dependencies. If you have Internet
+access the easiest way to do this is by running the following commands.
 
-From source:
-    sudo python setup.py install
+Install TwistedSNMP Dependency
 
-From PyPI:
-    sudo easy_install snmposter
+    wget http://downloads.sourceforge.net/project/twistedsnmp/twistedsnmp/0.3.13/TwistedSNMP-0.3.13.tar.gz
+    tar -xzf TwistedSNMP-0.3.13.tar.gz
+    cd TwistedSNMP-0.3.13
+    python setup.py install
+    cd ..
+
+Install PySNMP-SE Dependency
+
+    wget http://downloads.sourceforge.net/project/twistedsnmp/pysnmp-se/3.5.2/pysnmp-se-3.5.2.tar.gz
+    tar -xzf pysnmp-se-3.5.2.tar.gz
+    cd pysnmp-se-3.5.2
+    python setup.py install
+    cd ..
+
+Install snmposter
+
+    easy_install snmposter
 
 ### Usage
 Installing will create a command line tool called `snmposter`. This tool
