@@ -81,8 +81,7 @@ simulation.
 
 Example snmpwalk command to generate the above `Cisco_2811.snmpwalk` file:
 
-    snmpwalk -v2c -c public -m none -O enU 10.120.5.1 > Cisco_2811.snmpwalk
-    snmpwalk -v2c -c public -m none -O enU 10.120.5.1 .1.3.6.1.4.1.9 >> Cisco_2811.snmpwalk
+    snmpwalk -v2c -c public -m none -O enU 10.120.5.1 .1 > Cisco_2811.snmpwalk
 
 The important command line options are `-m none -O enU` to get the raw output.
 Don't worry if you get an error like `Cannot find module (none): At line 0 in
