@@ -87,11 +87,3 @@ The important command line options are `-m none -O enU` to get the raw output.
 Don't worry if you get an error like `Cannot find module (none): At line 0 in
 (none)` as this is expected and a result of us trying to load a non-existent
 MIB.
-
-It's also important to note that this example shows running two snmpwalk
-commands with the second one appending to the .snmpwalk file. The reason this
-is necessary is that most (all?) SNMP agents will only respond with the MIB-2
-tree with the non-specific walk requested by the first command. You then have
-to walk the enterprise MIB separately to get that data. The enterprise MIB
-differs from vendor to vendor. `.1.3.6.1.4.1.9` is an example that works for
-Cisco devices.
