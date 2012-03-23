@@ -33,6 +33,10 @@ Install PySNMP-SE Dependency
     python setup.py install
     cd ..
 
+If on Red Hat Enterprise Linux 5 or CentOS, install python-setuptools.
+
+    yum -y install python-setuptools
+
 Install snmposter
 
     easy_install snmposter
