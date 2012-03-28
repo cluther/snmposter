@@ -82,7 +82,11 @@ class SNMPoster:
                     if type == 'Counter32':
                         self.oids[oid] = v2c.Counter32(self.tryIntConvert(value[0]))
                     elif type == 'Counter64':
-                        self.oids[oid] = rfc1902.Counter64(long(value[0]))
+                        counter_value = long(value[0])
+                        if counter_value >= 4294967295:
+                            counter_value = 4294967294
+
+                        self.oids[oid] = rfc1902.Counter64(counter_value)
                     elif type == 'Gauge32':
                         self.oids[oid] = v2c.Gauge32(self.tryIntConvert(value[0]))
                     elif type == 'Hex-STRING':
