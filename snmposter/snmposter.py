@@ -90,7 +90,9 @@ class SNMPoster:
                     elif type == 'Gauge32':
                         self.oids[oid] = v2c.Gauge32(self.tryIntConvert(value[0]))
                     elif type == 'Hex-STRING':
-                        self.oids[oid] = ''.join([chr(int(c, 16)) for c in value[0].split(' ')])
+                        self.oids[oid] = ''.join(
+                            [chr(int(c, 16)) \
+                                for c in ' '.join(value).split(' ')])
                     elif type == 'INTEGER':
                         self.oids[oid] = self.tryIntConvert(value[0])
                     elif type == 'IpAddress':
