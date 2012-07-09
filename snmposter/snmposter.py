@@ -27,6 +27,17 @@ import re
 import csv
 
 
+def sanitize_dotted(string):
+    """Return dotted decimal strings with non-numerics replaced with 1.
+
+    This is necessary because some snmpwalk output files have had IP
+    addresses obscured with non-numeric characters.
+
+    """
+
+    return re.sub(r'[^ \.\d]', '1', string)
+
+
 class SNMPosterFactory:
     agents = []
 
@@ -90,12 +101,14 @@ class SNMPoster:
                     elif type == 'Gauge32':
                         self.oids[oid] = v2c.Gauge32(self.tryIntConvert(value[0]))
                     elif type == 'Hex-STRING':
+                        value = [sanitize_dotted(x) for x in value]
                         self.oids[oid] = ''.join(
                             [chr(int(c, 16)) \
                                 for c in ' '.join(value).split(' ')])
                     elif type == 'INTEGER':
                         self.oids[oid] = self.tryIntConvert(value[0])
                     elif type == 'IpAddress':
+                        value[0] = sanitize_dotted(value[0])
                         self.oids[oid] = v2c.IpAddress(value[0])
                     elif type == 'OID':
                         self.oids[oid] = v2c.ObjectIdentifier(value[0])
@@ -112,6 +125,8 @@ class SNMPoster:
                     oid, type, value1 = groups
                 else:
                     oid, type, value1 = (groups[0], 'STRING', groups[1])
+
+                oid = sanitize_dotted(oid)
 
                 if type == 'Timeticks':
                     value1 = re.search(r'^\((\d+)\) .*$', value1) \
