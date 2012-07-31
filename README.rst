@@ -39,7 +39,7 @@ binary compatible distributions such as CentOS.
 
    .. sourcecode:: bash
 
-      yum -y --enablerepo=epel install python26-devel
+      yum -y --enablerepo=epel install python26-devel gcc
 
 2. Install, setup and activate virtualenv.
 
