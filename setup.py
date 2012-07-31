@@ -19,7 +19,7 @@
 
 from setuptools import setup, find_packages
 
-version = '0.9.5'
+version = '0.9.11'
 
 setup(
     name='snmposter',

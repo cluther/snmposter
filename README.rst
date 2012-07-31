@@ -1,11 +1,16 @@
-## snmposter
+=============================================================================
+snmposter
+=============================================================================
+
 SNMP Agent Simulator
 
 This tool allows you to take the output of an snmpwalk command and then pretend
 to be the agent that it was gathered from. This can be useful when you're
 developing SNMP management tools.
 
-### Requirements
+Requirements
+=============================================================================
+
 Twisted, TwistedSNMP and PySNMP-SE.
 
 Twisted is available from PyPI and will be automatically installed if you go
@@ -13,35 +18,67 @@ the route of easy_install or pip. TwistedSNMP and PySNMP-SE are not currently
 available from PyPI and should be individually downloaded from sourceforge
 and installed from source.
 
-### Installation
-First you must download and install the dependencies. If you have Internet
-access the easiest way to do this is by running the following commands.
+Installation
+=============================================================================
 
-Install TwistedSNMP Dependency
+I recommend installing *snmposter* within a Python virtualenv. This makes it
+easier to install on operating systems such as CentOS 5 where the default
+system Python version is older than 2.5. Due to the dependency on *Twisted*,
+snmposter requires Python 2.5 or newer.
 
-    wget http://downloads.sourceforge.net/project/twistedsnmp/twistedsnmp/0.3.13/TwistedSNMP-0.3.13.tar.gz
-    tar -xzf TwistedSNMP-0.3.13.tar.gz
-    cd TwistedSNMP-0.3.13
-    python setup.py install
-    cd ..
+The following steps are specific to Red Hat Enterprise Linux 5 or one of its
+binary compatible distributions such as CentOS.
 
-Install PySNMP-SE Dependency
+1. Install the EPEL repository.
 
-    wget http://downloads.sourceforge.net/project/twistedsnmp/pysnmp-se/3.5.2/pysnmp-se-3.5.2.tar.gz
-    tar -xzf pysnmp-se-3.5.2.tar.gz
-    cd pysnmp-se-3.5.2
-    python setup.py install
-    cd ..
+   .. sourcecode:: bash
 
-If on Red Hat Enterprise Linux 5 or CentOS, install python-setuptools.
+      rpm -ivh http://mirror.cogentco.com/pub/linux/epel/5/i386/epel-release-5-4.noarch.rpm
 
-    yum -y install python-setuptools
+2. Install Python 2.6 and development tools.
 
-Install snmposter
+   .. sourcecode:: bash
 
-    easy_install snmposter
+      yum -y --enablerepo=epel install python26-devel
 
-### Usage
+2. Install, setup and activate virtualenv.
+
+   .. sourcecode:: bash
+
+      yum -y --enablerepo=epel install python26-virtualenv
+      virtualenv-2.6 /snmposter
+      source /snmposter/bin/activate
+
+3. Install TwistedSNMP dependency.
+
+   .. sourcecode:: bash
+
+      wget http://downloads.sourceforge.net/project/twistedsnmp/twistedsnmp/0.3.13/TwistedSNMP-0.3.13.tar.gz
+      tar -xzf TwistedSNMP-0.3.13.tar.gz
+      cd TwistedSNMP-0.3.13
+      python setup.py install
+      cd ..
+
+4. Install PySNMP-SE dependency.
+
+   .. sourcecode:: bash
+
+      wget http://downloads.sourceforge.net/project/twistedsnmp/pysnmp-se/3.5.2/pysnmp-se-3.5.2.tar.gz
+      tar -xzf pysnmp-se-3.5.2.tar.gz
+      cd pysnmp-se-3.5.2
+      python setup.py install
+      cd ..
+
+5. Install snmposter.
+
+   .. sourcecode:: bash
+
+      pip install snmposter
+
+
+Usage
+=============================================================================
+
 Installing will create a command line tool called `snmposter`. This tool
 requires root access because it listens on 161/udp and creates loopback aliases
 to support emulating multiple SNMP agents simultaneously.
@@ -54,9 +91,12 @@ an IP address that this snmpwalk data will be exposed on.
 
 Example usage:
 
-    sudo snmposter /etc/snmposter/agents.csv
+.. sourcecode:: bash
 
-Example contents of `/etc/snmposter/agents.csv`:
+   source /snmposter/bin/activate
+   snmposter /etc/snmposter/agents.csv
+
+Example contents of `/etc/snmposter/agents.csv`::
 
     /etc/snmposter/agents/Cisco_2811.snmpwalk,127.0.1.11
     /etc/snmposter/agents/NetApp_Filer_FAS3020.snmpwalk,127.0.1.12
@@ -68,7 +108,7 @@ the appropriate IP address. If you're going to be using this frequently I
 would recommend adding some entries to your `/etc/hosts` file to make it even
 easier.
 
-Example additions to `/etc/hosts`:
+Example additions to `/etc/hosts`::
 
     127.0.1.11      cisco-2811
     127.0.1.12      netapp-filer-fa3020
@@ -81,7 +121,9 @@ simulation.
 
 Example snmpwalk command to generate the above `Cisco_2811.snmpwalk` file:
 
-    snmpwalk -v2c -c public -m none -O enU 10.120.5.1 .1 > Cisco_2811.snmpwalk
+.. sourcecode:: bash
+
+   snmpwalk -v2c -c public -m none -O enU 10.120.5.1 .1 > Cisco_2811.snmpwalk
 
 The important command line options are `-m none -O enU` to get the raw output.
 Don't worry if you get an error like `Cannot find module (none): At line 0 in
