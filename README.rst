@@ -94,7 +94,7 @@ Example usage:
 .. sourcecode:: bash
 
    source /snmposter/bin/activate
-   snmposter /etc/snmposter/agents.csv
+   snmposter -f /etc/snmposter/agents.csv
 
 Example contents of `/etc/snmposter/agents.csv`::
 
