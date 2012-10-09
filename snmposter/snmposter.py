@@ -18,13 +18,26 @@
 ##############################################################################
 
 from twisted.internet import reactor
-from twistedsnmp import agent, agentprotocol, bisectoidstore
+from twistedsnmp import agent, agentprotocol, bisectoidstore, datatypes
 from twistedsnmp.pysnmpproto import v2c, rfc1902
 
 import sys
 import os
 import re
 import csv
+
+
+# twistedsnmp has a bug that causes it to fail to properly convert Counter64
+# values. We workaround this by retroactively fixing datatypes.v2Mapping.
+fixed_v2Mapping = []
+for datatype, converter in datatypes.v2Mapping:
+    if datatype == v2c.Counter64:
+        fixed_v2Mapping.append(
+            (datatype, datatypes.SimpleConverter(v2c.Counter64)))
+    else:
+        fixed_v2Mapping.append((datatype, converter))
+
+datatypes.v2Mapping = fixed_v2Mapping
 
 
 def sanitize_dotted(string):
@@ -93,11 +106,7 @@ class SNMPoster:
                     if type == 'Counter32':
                         self.oids[oid] = v2c.Counter32(self.tryIntConvert(value[0]))
                     elif type == 'Counter64':
-                        counter_value = long(value[0])
-                        if counter_value >= 4294967295:
-                            counter_value = 4294967294
-
-                        self.oids[oid] = rfc1902.Counter64(counter_value)
+                        self.oids[oid] = rfc1902.Counter64(long(value[0]))
                     elif type == 'Gauge32':
                         self.oids[oid] = v2c.Gauge32(self.tryIntConvert(value[0]))
                     elif type == 'Hex-STRING':

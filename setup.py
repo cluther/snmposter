@@ -19,7 +19,7 @@
 
 from setuptools import setup, find_packages
 
-version = '0.9.11'
+version = '1.0.0'
 
 setup(
     name='snmposter',
@@ -30,7 +30,7 @@ setup(
 
     # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Environment :: No Input/Output (Daemon)',
         'Intended Audience :: Developers',
@@ -41,9 +41,9 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.4',
         'Programming Language :: Python :: 2.5',
         'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development :: Testing',
         'Topic :: System :: Systems Administration',
