@@ -28,7 +28,7 @@ import csv
 
 
 # twistedsnmp has a bug that causes it to fail to properly convert Counter64
-# values. We workaround this by retroactively fixing datatypes.v2Mapping.
+# values. We workaround this by retroactively fixing datatypes mappings.
 fixed_v2Mapping = []
 for datatype, converter in datatypes.v2Mapping:
     if datatype == v2c.Counter64:
@@ -38,6 +38,13 @@ for datatype, converter in datatypes.v2Mapping:
         fixed_v2Mapping.append((datatype, converter))
 
 datatypes.v2Mapping = fixed_v2Mapping
+
+fixed_v1Mapping = [(rfc1902.Counter64, datatypes.SimpleConverter(v2c.Counter64))]
+for datatype, converter in datatypes.v1Mapping:
+    if datatype != rfc1902.Counter64:
+        fixed_v1Mapping.append((datatype, converter))
+
+datatypes.v1Mapping = fixed_v1Mapping
 
 
 def sanitize_dotted(string):
