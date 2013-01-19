@@ -1,4 +1,4 @@
-##############################################################################
+#######################################################################
 #
 # Copyright (C) 2010, Chet Luther <chet.luther@gmail.com>
 #
@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
+#######################################################################
 
 from twisted.internet import reactor
 from twistedsnmp import agent, agentprotocol, bisectoidstore, datatypes
@@ -27,8 +27,9 @@ import re
 import csv
 
 
-# twistedsnmp has a bug that causes it to fail to properly convert Counter64
-# values. We workaround this by retroactively fixing datatypes mappings.
+# twistedsnmp has a bug that causes it to fail to properly convert
+# Counter64 values. We workaround this by retroactively fixing datatypes
+# mappings.
 fixed_v2Mapping = []
 for datatype, converter in datatypes.v2Mapping:
     if datatype == v2c.Counter64:
@@ -48,12 +49,12 @@ datatypes.v1Mapping = fixed_v1Mapping
 
 
 def sanitize_dotted(string):
-    """Return dotted decimal strings with non-numerics replaced with 1.
+    '''
+    Return dotted decimal strings with non-numerics replaced with 1.
 
     This is necessary because some snmpwalk output files have had IP
     addresses obscured with non-numeric characters.
-
-    """
+    '''
 
     return re.sub(r'[^ \.\d]', '1', string)
 
@@ -97,11 +98,11 @@ class SNMPoster:
         self.oids = {}
 
         oid = ''
-        type = ''
+        type_ = ''
         value = []
 
-        file = open(filename, 'r')
-        for line in file:
+        snmpwalk = open(filename, 'r')
+        for line in snmpwalk:
             line = line.rstrip()
 
             match = re.search(r'^([^ ]+) = ([^\:]+):\s*(.*)$', line)
@@ -110,48 +111,62 @@ class SNMPoster:
 
             if match:
                 if len(value) > 0:
-                    if type == 'Counter32':
-                        self.oids[oid] = v2c.Counter32(self.tryIntConvert(value[0]))
-                    elif type == 'Counter64':
-                        self.oids[oid] = rfc1902.Counter64(long(value[0]))
-                    elif type == 'Gauge32':
-                        self.oids[oid] = v2c.Gauge32(self.tryIntConvert(value[0]))
-                    elif type == 'Hex-STRING':
-                        value = [sanitize_dotted(x) for x in value]
-                        self.oids[oid] = ''.join(
-                            [chr(int(c, 16)) \
-                                for c in ' '.join(value).split(' ')])
-                    elif type == 'INTEGER':
-                        self.oids[oid] = self.tryIntConvert(value[0])
-                    elif type == 'IpAddress':
-                        value[0] = sanitize_dotted(value[0])
-                        self.oids[oid] = v2c.IpAddress(value[0])
-                    elif type == 'OID':
-                        self.oids[oid] = v2c.ObjectIdentifier(value[0])
-                    elif type == 'STRING':
-                        self.oids[oid] = '\n'.join(value)
-                    elif type == 'Timeticks':
-                        self.oids[oid] = v2c.TimeTicks(int(value[0]))
+                    self.add_oid_value(oid, type_, value)
+
                     oid = ''
-                    type = ''
+                    type_ = ''
                     value = []
 
                 groups = match.groups()
                 if len(groups) == 3:
-                    oid, type, value1 = groups
+                    oid, type_, value1 = groups
                 else:
-                    oid, type, value1 = (groups[0], 'STRING', groups[1])
+                    oid, type_, value1 = (groups[0], 'STRING', groups[1])
 
                 oid = sanitize_dotted(oid)
 
-                if type == 'Timeticks':
-                    value1 = re.search(r'^\((\d+)\) .*$', value1) \
-                               .groups()[0]
+                if type_ == 'Timeticks':
+                    value1 = re.search(r'^\((\d+)\) .*$', value1).groups()[0]
+
                 value.append(value1.strip('"'))
             else:
                 value.append(line.strip('"'))
 
-        file.close()
+        snmpwalk.close()
+
+        if oid and type_:
+            self.add_oid_value(oid, type_, value)
+
+    def add_oid_value(self, oid, type_, value):
+        if type_ == 'Counter32':
+            self.oids[oid] = v2c.Counter32(self.tryIntConvert(value[0]))
+
+        elif type_ == 'Counter64':
+            self.oids[oid] = rfc1902.Counter64(long(value[0]))
+
+        elif type_ == 'Gauge32':
+            self.oids[oid] = v2c.Gauge32(self.tryIntConvert(value[0]))
+
+        elif type_ == 'Hex-STRING':
+            value = [sanitize_dotted(x) for x in value]
+            self.oids[oid] = ''.join(
+                [chr(int(c, 16)) for c in ' '.join(value).split(' ')])
+
+        elif type_ == 'INTEGER':
+            self.oids[oid] = self.tryIntConvert(value[0])
+
+        elif type_ == 'IpAddress':
+            value[0] = sanitize_dotted(value[0])
+            self.oids[oid] = v2c.IpAddress(value[0])
+
+        elif type_ == 'OID':
+            self.oids[oid] = v2c.ObjectIdentifier(value[0])
+
+        elif type_ == 'STRING':
+            self.oids[oid] = '\n'.join(value)
+
+        elif type_ == 'Timeticks':
+            self.oids[oid] = v2c.TimeTicks(int(value[0]))
 
     def tryIntConvert(self, myint):
         conv = -1
