@@ -123,9 +123,12 @@ Example snmpwalk command to generate the above `Cisco_2811.snmpwalk` file:
 
 .. sourcecode:: bash
 
-   snmpwalk -v2c -c public -m none -O enU 10.120.5.1 .1 > Cisco_2811.snmpwalk
+   snmpwalk -v2c -c public -m none -C c -O enU 10.120.5.1 .1 > Cisco_2811.snmpwalk
 
-The important command line options are `-m none -O enU` to get the raw output.
+The important command line options are `-m none -O enU` to get the raw output and '-C c' 
+to ignore out of sequence responses from the switch. (Sometimes this validation error is 
+triggered when walking routing MIBS on some switches)
+
 Don't worry if you get an error like `Cannot find module (none): At line 0 in
 (none)` as this is expected and a result of us trying to load a non-existent
 MIB.
