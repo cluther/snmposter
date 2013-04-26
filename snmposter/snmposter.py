@@ -56,7 +56,7 @@ def sanitize_dotted(string):
     addresses obscured with non-numeric characters.
     '''
 
-    return re.sub(r'[^ \.\d]', '1', string)
+    return re.sub(r'[^ \.\da-fA-F]', '1', string)
 
 
 class SNMPosterFactory:
