@@ -26,8 +26,58 @@ easier to install on operating systems such as CentOS 5 where the default
 system Python version is older than 2.5. Due to the dependency on *Twisted*,
 snmposter requires Python 2.5 or newer.
 
+Red Hat Enterprise Linux or CentOS 6
+-----------------------------------------------------------------------------
+
 The following steps are specific to Red Hat Enterprise Linux 5 or one of its
-binary compatible distributions such as CentOS.
+compatible distributions such as CentOS.
+
+1. Install Python development tools.
+
+   .. sourcecode:: bash
+
+      yum -y --install python-devel gcc
+
+2. Install, setup and activate virtualenv.
+
+   .. sourcecode:: bash
+
+      yum -y install python-virtualenv
+      virtualenv /snmposter
+      source /snmposter/bin/activate
+
+3. Install TwistedSNMP dependency.
+
+   .. sourcecode:: bash
+
+      wget http://downloads.sourceforge.net/project/twistedsnmp/twistedsnmp/0.3.13/TwistedSNMP-0.3.13.tar.gz
+      tar -xzf TwistedSNMP-0.3.13.tar.gz
+      cd TwistedSNMP-0.3.13
+      python setup.py install
+      cd ..
+
+4. Install PySNMP-SE dependency.
+
+   .. sourcecode:: bash
+
+      wget http://downloads.sourceforge.net/project/twistedsnmp/pysnmp-se/3.5.2/pysnmp-se-3.5.2.tar.gz
+      tar -xzf pysnmp-se-3.5.2.tar.gz
+      cd pysnmp-se-3.5.2
+      python setup.py install
+      cd ..
+
+5. Install snmposter.
+
+   .. sourcecode:: bash
+
+      pip install snmposter
+
+
+Red Hat Enterprise Linux or CentOS 5
+-----------------------------------------------------------------------------
+
+The following steps are specific to Red Hat Enterprise Linux 5 or one of its
+compatible distributions such as CentOS.
 
 1. Install the EPEL repository.
 
