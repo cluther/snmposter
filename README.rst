@@ -29,7 +29,7 @@ snmposter requires Python 2.5 or newer.
 Red Hat Enterprise Linux or CentOS 6
 -----------------------------------------------------------------------------
 
-The following steps are specific to Red Hat Enterprise Linux 5 or one of its
+The following steps are specific to Red Hat Enterprise Linux 6 or one of its
 compatible distributions such as CentOS.
 
 1. Install Python development tools.
