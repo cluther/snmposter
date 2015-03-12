@@ -36,7 +36,7 @@ compatible distributions such as CentOS.
 
    .. sourcecode:: bash
 
-      yum -y --install python-devel gcc
+      yum -y install python-devel gcc
 
 2. Install, setup and activate virtualenv.
 
