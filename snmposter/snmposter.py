@@ -100,9 +100,11 @@ class SNMPoster:
         for line in snmpwalk:
             line = line.rstrip()
 
+            # Typed match.
             match = re.search(r'^([^ ]+) = ([^\:]+):\s*(.*)$', line)
             if not match:
-                match = re.search(r'^([^ ]+) = (".*")$', line)
+                # Untyped match.
+                match = re.search(r'^([^ ]+) = (.*)$', line)
 
             if match:
                 if len(value) > 0:
@@ -115,8 +117,10 @@ class SNMPoster:
                 groups = match.groups()
                 if len(groups) == 3:
                     oid, type_, value1 = groups
-                else:
+                elif groups[1].startswith('"') and groups[1].endswith('"'):
                     oid, type_, value1 = (groups[0], 'STRING', groups[1])
+                else:
+                    oid, type_, value1 = (groups[0], 'INTEGER', groups[1])
 
                 oid = sanitize_dotted(oid)
 
