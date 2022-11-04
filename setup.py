@@ -55,7 +55,7 @@ setup(
     zip_safe=False,
 
     install_requires=[
-        'Twisted==12.0.0',
+        'Twisted==22.10.0',
         #'TwistedSNMP', Not currently installable via PyPI.
         #'pysnmp-se', Not currently installable via PyPI.
         ],
